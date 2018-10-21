@@ -5,17 +5,7 @@ class Generate {
     console.log(`CITY REPORT :`)
     console.log(`:::::::::::::::::::::::::`)
     console.log(city)
-    // console.log(`City Name : `)
-    // console.log(city.get_name)
-    // console.log(`City Streets : `)
-    // console.table(city.get_streets)
-    // console.log(`City Houses : `)
-    // console.table(city.get_houses)
-    // console.log(`City Residents : `)
-    // console.table(city.get_residents)
     console.log(`:::::::::::::::::::::::::`)
-
-    console.log(`/////////////////////////`)
     console.log(`/////////////////////////`)
   }
 
@@ -60,6 +50,17 @@ class Generate {
     return residents
   }
 
+  static letters(number) {
+    let letters = []
+    for (let i=0;i<number;i++) {
+      let house = city.houses[Math.floor(Math.random() * city.houses.length)]
+      let address = `${house.number} ${house.street}`
+      let content = faker.lorem.paragraph()
+      letters.push(new Letter(address, content))
+    }
+    return letters
+  }
+
   static job() {
     const jobs = ['Electricien','Plombier','Infirmier','Conducteur d\'engins','Dentiste','Pompier','Gendarme','Informaticien','Policier','Docteur','Boulanger','Bibliothèquère']
     return jobs[Math.floor(Math.random() * jobs.length)]
@@ -78,11 +79,12 @@ class City {
     this.postOffice = {
       mailBox: {
         content:[],
-        get_content: () => ( this.content ),
-        set_content: (letters) => { this.content = letters },
-        add_content: (letter) => { this.content.push(letter) }
+        get_content: () => ( this.postOffice.mailBox.content ),
+        set_content: (letters) => { this.postOffice.mailBox.content = letters },
+        add_content: (letter) => { this.postOffice.mailBox.content.push(letter) }
       }
     }
+    this.letters = []
     
     this.init()
   }
@@ -105,13 +107,17 @@ class City {
   get get_postman() { return this.postman }
   set set_postman(postman) { this.postman = postman }
 
+  get get_letters() { return this.letters }
+  set set_letters(letters) { this.letters = letters }
+
   //initialisation de la ville :
-  init(streets_number, houses_number, residents_number) {
+  init(streets_number, houses_number, residents_number, letters_number) {
     this.set_name = faker.address.city()
     this.set_streets = Generate.streets(streets_number)
     this.set_houses = Generate.houses(houses_number)
     this.set_residents = Generate.residents(residents_number)
     this.set_postman = new Postman()
+    this.set_letters = Generate.letters(letters_number)
   }
 }
 
@@ -138,9 +144,9 @@ class House {
     this.residents = []
     this.mailBox = {
       content:[],
-      get_content: () => ( this.content ),
-      set_content: (letters) => { this.content = letters },
-      add_content: (letter) => { this.content.push(letter) }
+      get_content: () => ( this.mailBox.content ),
+      set_content: (letters) => { this.mailBox.content += letters },
+      add_content: (letter) => { this.mailBox.content.push(letter) }
     }
 
     //   document.getElementById('body').innerHTML += `
@@ -168,17 +174,40 @@ class Postman extends People {
 
     this.mailBag = {
       content:[],
-
     }
     // this.start_tour
   }
 
   start_tour() {
-    console.log(`This is postman "${this.firstName} ${this.lastName}". \n Starting my mission`)
+    if (this.mailBag.content.length > 0) {
+      console.log(`/////////////////////////`)
+      console.log(`This is postman "${this.firstName} ${this.lastName}". \n 
+                    Starting my mission`)
+      city.streets.forEach(element => {
+      console.log(`:::::::::::::::::::::::::`)
+      console.log(`STREET : ${element.name}`)
+        element.houses.forEach(house => {
+          console.log(`HOUSE : ${house.number} ${house.street}`)
+          let house_mail = this.mailBag.content.filter(letter => (
+            letter.address == `${house.number} ${house.street}`
+          ))
+          if (house_mail.length < 0) { 
+            console.log(`Il y a du courrier pour cette maison ! \n
+                          `)
+            house.mailBox.set_content(house_mail) 
+          }
+        })
+      })
+      console.log(`/////////////////////////`)
+    } else {
+      console.log(`Je n'ai pas de courrier ! Je ne peux donc pas entamer la course`)
+    }
   }
 
   get_mail_from_postoffice() {
-
+    console.log(`Je vais chercher le courrier au bureau de poste ! \n
+                  Nombre de lettres : ${city.postOffice.mailBox.get_content().length}`)
+    this.mailBag.content += city.postOffice.mailBox.get_content()
   }
 }
 
@@ -188,4 +217,13 @@ class Resident extends People {
     this.job = Generate.job()
     this.house = ''
   }
+}
+
+class Letter {
+  constructor(address, content) {
+    this.people = ''
+    this.address = address
+    this.content = content
+  }
+  
 }
