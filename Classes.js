@@ -4,12 +4,15 @@ class Generate {
     console.log(`:::::::::::::::::::::::::`);
     console.log(`CITY REPORT :`);
     console.log(`:::::::::::::::::::::::::`);
-    console.log(`City Name : `);
-    console.log(city.get_name);
-    console.log(`City Streets : `);
-    console.table(city.get_streets);
-    console.log(`City Houses : `);
-    console.table(city.get_houses);
+    console.log(city);
+    // console.log(`City Name : `);
+    // console.log(city.get_name);
+    // console.log(`City Streets : `);
+    // console.table(city.get_streets);
+    // console.log(`City Houses : `);
+    // console.table(city.get_houses);
+    // console.log(`City Residents : `);
+    // console.table(city.get_residents);
     console.log(`:::::::::::::::::::::::::`);
 
     console.log(`/////////////////////////`);
@@ -49,8 +52,12 @@ class Generate {
   }
 // some_city.get_streets[Math.floor(Math.random() * some_city.get_streets.lengths)]
 
-  static resident() {
-    return new Resident();
+  static residents(number) {
+    let residents = [];
+    for (let i=0;i<number;i++) {
+      residents.push(new Resident())
+    }
+    return residents;
   }
 
   static job() {
@@ -65,7 +72,7 @@ class City {
     this.name = '';
     this.streets = [];
     this.houses = [];
-    // this.residents = [];
+    this.residents = [];
     
     this.init();
   }
@@ -74,21 +81,20 @@ class City {
   set set_name(name) { this.name = name }
   get get_streets() { return this.streets }
   set set_streets(streets) { this.streets = streets }
+  get get_houses() { return this.houses }
+  set set_houses(houses) { this.houses = houses }
+  get get_residents() { return this.residents }
+  set set_residents(residents) { this.residents = residents }
 
-  get get_houses() {
-    return this.houses;
-  }
-
-  init(streets_number, houses_number) {
+  init(streets_number, houses_number, residents_number) {
     //initialisation de la ville :
     this.set_name = faker.address.city();
     //initialisation des rues : 
-    this.streets = Generate.streets(streets_number);
+    this.set_streets = Generate.streets(streets_number);
     //initialisation des maisons :
-    this.houses = Generate.houses(houses_number);
-    // for (let i = 0; i <= houses_number; i++) {
-    //   this.houses.push(new House());
-    // }
+    this.set_houses = Generate.houses(houses_number);
+    //initialisation des habitants :
+    this.set_residents = Generate.residents(residents_number);
   }
 }
 
@@ -124,5 +130,28 @@ class House {
 class LetterBox {
   constructor() {
     this.content = [];
+  }
+}
+class People {
+  constructor() {
+    this.firstName = faker.name.firstName();
+    this.lastName = faker.name.lastName();
+    this.sex = '';
+    this.status = 'Alive';
+  }
+}
+
+class Postman extends People {
+  constructor(firstName, lastName, sex, status) {
+    super(firstName, lastName, sex, status);
+    this.job = 'Postman';
+  }
+}
+
+class Resident extends People {
+  constructor(firstName, lastName, sex, status) {
+    super(firstName, lastName, sex, status);
+
+    this.job = Generate.job();
   }
 }
