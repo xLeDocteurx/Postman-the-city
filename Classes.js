@@ -73,18 +73,30 @@ class City {
     this.streets = [];
     this.houses = [];
     this.residents = [];
+
+    this.postmen = [];
     
     this.init();
   }
   // Accesseurs
   get get_name() { return this.name }
   set set_name(name) { this.name = name }
+
   get get_streets() { return this.streets }
   set set_streets(streets) { this.streets = streets }
+  set add_street(street) { this.streets = [...this.streets, street] }
+
   get get_houses() { return this.houses }
   set set_houses(houses) { this.houses = houses }
+  set add_house(house) { this.houses = [...this.houses, house] }
+
   get get_residents() { return this.residents }
   set set_residents(residents) { this.residents = residents }
+  set add_resident(resident) { this.residents = [...this.residents, resident] }
+
+  get get_postmen() { return this.postmen }
+  set set_postmen(postmen) { this.postmen = postmen }
+  set add_postman(postman) { this.residents = [...this.postmen, postman] }
 
   init(streets_number, houses_number, residents_number) {
     //initialisation de la ville :
@@ -136,7 +148,7 @@ class People {
   constructor() {
     this.firstName = faker.name.firstName();
     this.lastName = faker.name.lastName();
-    this.sex = '';
+    this.sex = Math.floor(Math.random() * 2) ? 'Female' : 'Male';
     this.status = 'Alive';
   }
 }
@@ -151,7 +163,6 @@ class Postman extends People {
 class Resident extends People {
   constructor(firstName, lastName, sex, status) {
     super(firstName, lastName, sex, status);
-
     this.job = Generate.job();
   }
 }
