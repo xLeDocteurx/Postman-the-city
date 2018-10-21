@@ -159,6 +159,11 @@ class Postman extends People {
     this.job = 'Postman';
 
     this.mailBag = [];
+    // this.start_tour;
+  }
+
+  start_tour() {
+    console.log(`This is postman "${this.firstName} ${this.lastName}". \n Starting my mission`)
   }
 }
 

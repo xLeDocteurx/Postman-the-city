@@ -9,4 +9,4 @@ city.init(streets_number, houses_number, residents_number);
 // Créer un report pour pouvoir surveiller la génération de la ville
 Generate.report();
 // Déclenchement du facteur
-city.postmen.start_tour();
+city.postman.start_tour();
