@@ -74,7 +74,7 @@ class City {
     this.houses = [];
     this.residents = [];
 
-    this.postmen = [];
+    this.postman = [];
     
     this.init();
   }
@@ -94,19 +94,16 @@ class City {
   set set_residents(residents) { this.residents = residents }
   set add_resident(resident) { this.residents = [...this.residents, resident] }
 
-  get get_postmen() { return this.postmen }
-  set set_postmen(postmen) { this.postmen = postmen }
-  set add_postman(postman) { this.residents = [...this.postmen, postman] }
+  get get_postman() { return this.postman }
+  set set_postman(postman) { this.postman = postman }
 
+  //initialisation de la ville :
   init(streets_number, houses_number, residents_number) {
-    //initialisation de la ville :
     this.set_name = faker.address.city();
-    //initialisation des rues : 
     this.set_streets = Generate.streets(streets_number);
-    //initialisation des maisons :
     this.set_houses = Generate.houses(houses_number);
-    //initialisation des habitants :
     this.set_residents = Generate.residents(residents_number);
+    this.set_postman = new Postman();
   }
 }
 
@@ -116,9 +113,9 @@ class Street {
     this.houses = [];
   }
   get get_name() { return this.name }
-  get get_houses() { return this.houses }
   set set_name(name) { this.name = name }
-  set add_house(house) { this.houses.push(house) }
+  get get_houses() { return this.houses }
+  set add_house(house) { this.houses = [...this.houses, house] }
 }
 
 class House {
@@ -137,6 +134,9 @@ class House {
     //   <img class="house-i" src="http://www.xn--icne-wqa.com/images/icones/6/0/go-home-5.png" alt="house"/>
     // `;
   }
+  get get_residents() { return this.residents }
+  set set_residents(residents) { this.residents = residents }
+  set add_resident(resident) { this.residents = [...this.residents, resident] }
 }
 
 class LetterBox {
@@ -157,6 +157,8 @@ class Postman extends People {
   constructor(firstName, lastName, sex, status) {
     super(firstName, lastName, sex, status);
     this.job = 'Postman';
+
+    this.mailBag = [];
   }
 }
 
@@ -164,5 +166,6 @@ class Resident extends People {
   constructor(firstName, lastName, sex, status) {
     super(firstName, lastName, sex, status);
     this.job = Generate.job();
+    this.house = '';
   }
 }
