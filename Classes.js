@@ -118,6 +118,7 @@ class City {
     this.set_residents = Generate.residents(residents_number)
     this.set_postman = new Postman()
     this.set_letters = Generate.letters(letters_number)
+    this.postOffice.mailBox.set_content(this.get_letters)
   }
 }
 
@@ -179,6 +180,8 @@ class Postman extends People {
   }
 
   start_tour() {
+    let tour_count = 0;
+    const mailBag_count = this.mailBag.content.length
     if (this.mailBag.content.length > 0) {
       console.log(`/////////////////////////`)
       console.log(`This is postman "${this.firstName} ${this.lastName}". \n 
@@ -193,21 +196,25 @@ class Postman extends People {
           ))
           if (house_mail.length < 0) { 
             console.log(`Il y a du courrier pour cette maison ! \n
-                          `)
+                          Je le met dans la boite aux lettres de la maison`)
+            tour_count += 1
             house.mailBox.set_content(house_mail) 
-          }
+          } else { console.log(`Il n'y a rien pour cette maison`) }
         })
       })
       console.log(`/////////////////////////`)
     } else {
       console.log(`Je n'ai pas de courrier ! Je ne peux donc pas entamer la course`)
     }
+    console.log(`J'ai fini ma tourné.
+                  ${tour_count} lettres ont étées déposés
+                  sur les ${mailBag_count} récupérées à la poste`)
   }
 
   get_mail_from_postoffice() {
     console.log(`Je vais chercher le courrier au bureau de poste ! \n
                   Nombre de lettres : ${city.postOffice.mailBox.get_content().length}`)
-    this.mailBag.content += city.postOffice.mailBox.get_content()
+    this.mailBag.content = city.postOffice.mailBox.get_content()
   }
 }
 
