@@ -8,6 +8,10 @@ class Generate {
     console.log(`:::::::::::::::::::::::::`)
     console.log(`/////////////////////////`)
     document.getElementById("CityName").innerText = city.name
+    document.getElementById("houseCount").innerText = city.houses.length
+    document.getElementById("lettersCount").innerText = city.letters.length
+    document.getElementById("streetsCount").innerText = city.streets.length
+
   }
 
   static getDatas() {
