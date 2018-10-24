@@ -1,4 +1,4 @@
-const streets_number = 20
+let streets_number = document.getElementById("setStreetsNumber").value
 const houses_number = streets_number * 5
 const residents_number = Math.round(houses_number * 1.25)
 let letters_number = Math.round(Math.random() * residents_number)
