@@ -7,6 +7,7 @@ class Generate {
     console.log(city)
     console.log(`:::::::::::::::::::::::::`)
     console.log(`/////////////////////////`)
+    document.getElementById("CityName").innerText = city.name
   }
 
   static getDatas() {
