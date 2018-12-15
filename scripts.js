@@ -8,9 +8,6 @@ let city = new City()
 // Déclenchement de la méthode d'initialisation de la ville
 city.init(streets_number, houses_number, residents_number, letters_number)
 // Créer un report pour pouvoir surveiller la génération de la ville
-
-
-
 const report = () => {
 Generate.report()
 city.init(streets_number, houses_number, residents_number, letters_number)
